@@ -4,7 +4,8 @@
   </div>
 </template>
 <script>
-function Init() {
+/* eslint-disable */
+function init() {
   var WIDTH;
   var HEIGHT;
   var canvas;
@@ -112,7 +113,9 @@ function Init() {
 
 export default {
   name: "FireflyTweenMax",
-  computed() {},
+  mounted() {
+      init()
+  },
   updated() {},
 };
 </script>

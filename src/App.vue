@@ -1,16 +1,22 @@
 <template>
   <div id="app">
-    <FireflyCss/>
+    <!-- css版 -->
+    <FireflyCss/>  
+    <!-- 插件版 -->
+    <!-- <FireflyTweenMax/> -->
   </div>
 </template>
 
 <script>
+/* eslint-disable */
 import FireflyCss from './components/FireflyCss.vue'
+import FireflyTweenMax from './components/FireflyTweenMax.vue'
 
 export default {
   name: 'App',
   components: {
-    FireflyCss
+    FireflyCss,
+    FireflyTweenMax
   }
 }
 </script>
