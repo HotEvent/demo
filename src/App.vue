@@ -4,23 +4,28 @@
     <!-- <FireflyCss/>   -->
     <!-- 插件版 -->
     <!-- <FireflyTweenMax/> -->
-    <Chat/>
+    <Chat v-if="done" :type="1" :userId="1000" :toUserId="1" />
   </div>
 </template>
 
 <script>
 /* eslint-disable */
-import FireflyCss from './components/FireflyCss.vue'
-import FireflyTweenMax from './components/FireflyTweenMax.vue'
+import FireflyCss from "./components/FireflyCss.vue";
+import FireflyTweenMax from "./components/FireflyTweenMax.vue";
 import Chat from "./components/Chat.vue";
 export default {
-  name: 'App',
+  name: "App",
   components: {
     FireflyCss,
     FireflyTweenMax,
-    Chat
-  }
-}
+    Chat,
+  },
+  data() {
+    return {
+      done: true,
+    };
+  },
+};
 </script>
 
 <style>
@@ -32,7 +37,7 @@ export default {
   color: #2c3e50;
   margin-top: 60px;
 }
-body{
+body {
   min-height: 100vh;
   /* background: black; */
 }

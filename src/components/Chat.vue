@@ -23,87 +23,51 @@
     </div>
     <div class="send_box">
       <textarea id="txt" class="txt_box" name="reworkmes" rows="2"></textarea>
-      <div class="send" id="send">发送</div>
+      <div class="send" id="send" v-on:click="handSendClick">发送</div>
     </div>
   </div>
 </template>
 <script>
 /* eslint-disable */
 
-function init() {
-  var type = 1; //type 0游客 1客户 2客服 3代练员
-  var userId = 1000; //当前用户id 没有传0
-  var toUserId = 1; //对方用户id 没有传0
-  $(function () {
-    window.onload = function () {
-      initWebSocket();
+function init(type, userId, toUserId) {
+  //   var type = 1; //type 0游客 1客户 2客服 3代练员
+  //   var userId = 1000; //当前用户id 没有传0
+  //   var toUserId = 1; //对方用户id 没有传0
+  $(function () {});
+}
+export default {
+  name: "Chat",
+  props: {
+    type: {
+      type: Number,
+      required: true,
+    },
+    userId: {
+      type: Number,
+      required: true,
+    },
+    toUserId: {
+      type: Number,
+      required: true,
+    },
+  },
+  data() {
+    return {
+    //   type: 1,
+    //   userId: 1000,
+    //   toUserId: 1,
     };
-    var socket;
-    var initWebSocket = function () {
-      if (window.WebSocket) {
-        socket = new WebSocket(
-          "ws://dailian.demo2.luzhenyu.cn/websocket/" +
-            type +
-            "/" +
-            toUserId +
-            "/" +
-            userId
-        );
-        socket.onmessage = function (ev) {
-          addMessage(ev.data);
-        };
-        socket.onopen = function (e) {
-          console.log(e);
-        };
-        socket.onclose = function (e) {
-          console.log(e);
-        };
-        socket.onerror = function (e) {
-          console.log(e);
-        };
-      } else {
-      }
-    };
-
-    var send = function (obj) {
-      var data = function () {
-        socket.send(obj);
-      };
-      if (socket.readyState !== 1) {
-        socket.close();
-        initWebSocket();
-        setTimeout(function () {
-          data();
-        }, 250);
-      } else {
-        data();
-      }
-    };
-
-    $("#send").click(function () {
-      //获取输入框的内容
-      var txt = $("#txt").val();
-      if (txt.length > 0) {
-        //构建一个标准格式的JSON对象
-        var obj = JSON.stringify({
-          text: txt,
-        });
-        // 发送消息
-        send(obj);
-        // 清空消息输入框
-        $("#txt").val("");
-        $("#txt").attr("rows", 1);
-      }
-    });
-
-    function addMessage(msg) {
+  },
+  methods: {
+    addMessage(msg) {
       var data = JSON.parse(msg);
       if (data.type == 1) {
         console.log(data.data);
         var data = data.data;
         var box = $("#msgtmp1").clone(); //复制一份模板，取名为box
         box.find('[ff="name"]').html("代练员"); //在box中设置昵称
-        if (userId == data.userId) {
+        if (this.userId == data.userId) {
           box = $("#msgtmp2").clone(); //复制一份模板，取名为box
           box.find('[ff="name"]').html("顾客"); //在box中设置昵称
         }
@@ -131,7 +95,7 @@ function init() {
           var data = value;
           var box = $("#msgtmp1").clone(); //复制一份模板，取名为box
           box.find('[ff="name"]').html("顾客"); //在box中设置昵称
-          if (userId == data.userId) {
+          if (this.userId == data.userId) {
             box = $("#msgtmp2").clone(); //复制一份模板，取名为box
             box.find('[ff="name"]').html("代练员"); //在box中设置昵称
           }
@@ -154,14 +118,88 @@ function init() {
         var ele = document.getElementById("message_box");
         ele.scrollTop = ele.scrollHeight + 9999;
       }
-    }
-  });
-}
-export default {
-    name:'Chat',
-    mounted(){
-        init()
-    }
+    },
+    handSendClick() {
+      //获取输入框的内容
+      var txt = $("#txt").val();
+      if (txt.length > 0) {
+        //构建一个标准格式的JSON对象
+        var obj = JSON.stringify({
+          text: txt,
+        });
+        // 发送消息
+        this.send(obj);
+        // 清空消息输入框
+        $("#txt").val("");
+        $("#txt").attr("rows", 1);
+      }
+    },
+    initWebSocket() {
+      if (window.WebSocket) {
+        let socket = new WebSocket(
+          "ws://dailian.demo2.luzhenyu.cn/websocket/" +
+            this.type +
+            "/" +
+            this.toUserId +
+            "/" +
+            this.userId
+        );
+        socket.onmessage = (ev) => {
+          this.addMessage(ev.data);
+        };
+        socket.onopen = (e) => {
+          console.log(e);
+        };
+        socket.onclose = (e) => {
+          console.log(e);
+        };
+        socket.onerror = (e) => {
+          console.log(e);
+        };
+        this.socket = socket;
+      } else {
+      }
+    },
+    send(obj) {
+      var data = () => {
+        this.socket.send(obj);
+      };
+      if (this.socket.readyState !== 1) {
+        this.socket.close();
+        this.initWebSocket();
+        setTimeout(function () {
+          data();
+        }, 250);
+      } else {
+        data();
+      }
+    },
+  },
+  mounted() {
+    let type = this.type;
+    let userId = this.userId;
+    let toUserId = this.toUserId;
+    this.initWebSocket();
+    var socket;
+
+    var send = (obj) => {};
+
+    // $("#send").click(function () {
+    //   //获取输入框的内容
+    //   var txt = $("#txt").val();
+    //   if (txt.length > 0) {
+    //     //构建一个标准格式的JSON对象
+    //     var obj = JSON.stringify({
+    //       text: txt,
+    //     });
+    //     // 发送消息
+    //     send(obj);
+    //     // 清空消息输入框
+    //     $("#txt").val("");
+    //     $("#txt").attr("rows", 1);
+    //   }
+    // });
+  },
 };
 </script>
 <style lang="less">
