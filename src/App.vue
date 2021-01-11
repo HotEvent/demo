@@ -1,9 +1,10 @@
 <template>
   <div id="app">
     <!-- css版 -->
-    <FireflyCss/>  
+    <!-- <FireflyCss/>   -->
     <!-- 插件版 -->
     <!-- <FireflyTweenMax/> -->
+    <Chat/>
   </div>
 </template>
 
@@ -11,12 +12,13 @@
 /* eslint-disable */
 import FireflyCss from './components/FireflyCss.vue'
 import FireflyTweenMax from './components/FireflyTweenMax.vue'
-
+import Chat from "./components/Chat.vue";
 export default {
   name: 'App',
   components: {
     FireflyCss,
-    FireflyTweenMax
+    FireflyTweenMax,
+    Chat
   }
 }
 </script>
@@ -32,6 +34,6 @@ export default {
 }
 body{
   min-height: 100vh;
-  background: black;
+  /* background: black; */
 }
 </style>
