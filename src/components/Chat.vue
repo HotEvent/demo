@@ -30,12 +30,12 @@
 <script>
 /* eslint-disable */
 
-function init(type, userId, toUserId) {
-  //   var type = 1; //type 0游客 1客户 2客服 3代练员
-  //   var userId = 1000; //当前用户id 没有传0
-  //   var toUserId = 1; //对方用户id 没有传0
-  $(function () {});
-}
+// function init(type, userId, toUserId) {
+//   //   var type = 1; //type 0游客 1客户 2客服 3代练员
+//   //   var userId = 1000; //当前用户id 没有传0
+//   //   var toUserId = 1; //对方用户id 没有传0
+//   $(function () {});
+// }
 export default {
   name: "Chat",
   props: {
@@ -54,9 +54,9 @@ export default {
   },
   data() {
     return {
-    //   type: 1,
-    //   userId: 1000,
-    //   toUserId: 1,
+      //   type: 1,
+      //   userId: 1000,
+      //   toUserId: 1,
     };
   },
   methods: {
@@ -89,8 +89,9 @@ export default {
         var ele = document.getElementById("message_box");
         ele.scrollTop = ele.scrollHeight + 9999;
       }
+      
       if (data.type == 2) {
-        $.each(data.data, function (key, value) {
+        $.each(data.data, (key, value) => {
           console.log(value);
           var data = value;
           var box = $("#msgtmp1").clone(); //复制一份模板，取名为box
@@ -145,6 +146,7 @@ export default {
             this.userId
         );
         socket.onmessage = (ev) => {
+          console.log("foo");
           this.addMessage(ev.data);
         };
         socket.onopen = (e) => {
@@ -167,7 +169,7 @@ export default {
       if (this.socket.readyState !== 1) {
         this.socket.close();
         this.initWebSocket();
-        setTimeout(function () {
+        setTimeout(() => {
           data();
         }, 250);
       } else {
