@@ -96,6 +96,7 @@ export default {
           var data = value;
           var box = $("#msgtmp1").clone(); //复制一份模板，取名为box
           box.find('[ff="name"]').html("顾客"); //在box中设置昵称
+          console.log(this)
           if (this.userId == data.userId) {
             box = $("#msgtmp2").clone(); //复制一份模板，取名为box
             box.find('[ff="name"]').html("代练员"); //在box中设置昵称
